@@ -192,7 +192,7 @@ function buy_potions()
 				{
 					var num_potions = num_items(type);
 
-					if(num_potions < min_potions)
+					if(num_potions < mininumPotionsToHaveOnHand)
 					{
 						buy(type, purchaseAmount);
 					}
