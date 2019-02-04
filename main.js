@@ -91,15 +91,9 @@ function killMonsters()
 	}
 */
 
-	if(currentTarget == null)
-	{
-		currentTarget = find_viable_targets()[0];
-		change_target(currentTarget);
-	}
-
 	//Attack or move to target
 
-    if (currentTarget != null) 
+    if (get_target()) 
     {
         if (distance_to_point(currentTarget.real_x, currentTarget.real_y) < character.range) {
             if (can_attack(currentTarget)) 
@@ -118,8 +112,15 @@ function killMonsters()
 		{
 			game_log("finding a target");
             smart_move({ to: monster_targets[0] });
+            findNewMonsterToKill();
         }
 	}
+}
+
+function findNewMonsterToKill()
+{
+	currentTarget = find_viable_targets()[0];
+	change_target(currentTarget);
 }
 
 //This function contains our logic during resupply runs
