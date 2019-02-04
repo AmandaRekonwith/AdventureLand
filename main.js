@@ -185,7 +185,7 @@ function buy_potions()
 			
 			if(item_def != null)
 			{
-				var cost = item_def.g * 5;
+				var cost = item_def.g * 4;
 
 				if(character.gold >= cost)
 				{
@@ -193,7 +193,7 @@ function buy_potions()
 
 					if(num_potions < min_potions)
 					{
-						buy(type, 5);
+						buy(type, 4);
 					}
 				}
 				else
