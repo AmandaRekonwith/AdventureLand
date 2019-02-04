@@ -174,7 +174,7 @@ function resupplyManaPotions()
 function buy_potions()
 {
 	var potion_types = ["hpot0", "mpot0"];
-	
+
 	if(empty_slots() > 0)
 	{
 		for(type_id in potion_types)
@@ -185,7 +185,7 @@ function buy_potions()
 			
 			if(item_def != null)
 			{
-				var cost = item_def.g * purchase_amount;
+				var cost = item_def.g * 5;
 
 				if(character.gold >= cost)
 				{
