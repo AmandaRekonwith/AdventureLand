@@ -1,71 +1,71 @@
 game_log("---Script Start---");
 //Put monsters you want to kill in here
 //If your character has no target, it will travel to a spawn of the first monster in the list below.
-var monster_targets = ["goo"];
+var monster_targets = ["crab"];
 
-var state = "farm";
+var currentActivity = "";
+var currentTarget = null;
 
-var min_potions = 50; //The number of potions at which to do a resupply run.
-var purchase_amount = 50;//How many potions to buy at once.
-var potion_types = ["hpot0", "mpot0"];//The types of potions to keep supplied.
+var mininumPotionsToHaveOnHand = 50; //T e number of potions at which to do a resupply run.
 
 //Movement And Attacking
 setInterval(function () {
 	
 	//Determine what state we should be in.
-	state_controller();
+	currentActivity = determineWhatToDo();
 	
 	//Switch statement decides what we should do based on the value of 'state'
-	switch(state)
+	switch(currentActivity)
 	{
-		case "farm":
-			farm();
+		case "Kill Monsters":
+			killMonsters();
 			break;
-		case "resupply_potions":
-			resupply_potions();
+		case "Resupply Health Potions":
+			resupplyHealthPotions();
+			break;
+		case "Resupply Mana Potions":
+			resupplyManaPotions();
 			break;
 	}
-}, 100);//Execute 10 times per second
+}, 500); //Execute 2 times per second
 
-//Potions And Looting
-setInterval(function () {
-    loot();
+
+function determineWhatToDo()
+{
+	//Default to farming
+	if(currentActivity == "")
+	{
+		return "Kill Monsters";
+	}
+
+	var healthPotionType = potion_types["hpot0"];
+	var numberOfHealthPotionsCurrentlyHeld = num_items(healthPotionType);
+	if(numberOfHealthPotionsCurrentlyHeld < 50)
+	{
+		return "Resupply Health Potions";
+	}
+
+	var manaPotionType = potion_types["mpot0"];
+	var numberOfManaPotionsCurrentlyHeld = num_items(manaPotionType);
+	if(numberOfManaPotionsCurrentlyHeld < 50)
+	{
+		return "Resupply Mana Potions";
+	}
+
+	return "Kill Monsters";
+}
+
+//This function contains our logic for when we're farming mobs
+function killMonsters()
+{
+	loot();
 
     //Heal With Potions if we're below 75% hp.
     if (character.hp / character.max_hp < 0.5 || character.mp / character.max_mp < 0.5) {
         use_hp_or_mp();
     }
-}, 500 );//Execute 2 times per second
 
-function state_controller()
-{
-	//Default to farming
-	var new_state = "farm";
-	
-	//Do we need potions?
-	for(type_id in potion_types)
-	{
-		var type = potion_types[type_id];
-		
-		var num_potions = num_items(type);
-		
-		if(num_potions < min_potions)
-		{
-			new_state = "resupply_potions";
-			break;
-		}
-	}
-	
-	if(state != new_state)
-	{
-		state = new_state;
-	}
-	
-}
-
-//This function contains our logic for when we're farming mobs
-function farm()
-{
+/*
 	var target=get_targeted_monster();
 	if(!target)
 	{
@@ -91,34 +91,64 @@ function farm()
 		set_message("Attacking");
 		attack(target);
 	}
+*/
 
+	if(currentTarget == null)
+	{
+		currentTarget = find_viable_targets()[0];
+		change_target(currentTarget);
+	}
 
-
-	/*
-	var target = find_viable_targets()[0];
 	//Attack or move to target
-    if (target != null) {
-        if (distance_to_point(target.real_x, target.real_y) < character.range) {
-            if (can_attack(target)) {
-                attack(target);
+
+    if (currentTarget != null) 
+    {
+        if (distance_to_point(currentTarget.real_x, currentTarget.real_y) < character.range) {
+            if (can_attack(currentTarget)) 
+            {
+                attack(currentTarget);
             }
         }
-        else {
-            move_to_target(target);
+        else 
+        {
+            move_to_target(currentTarget);
         }
 	}
 	else
 	{
-		if (!smart.moving) {
+		if (!smart.moving) 
+		{
 			game_log("finding a target");
             smart_move({ to: monster_targets[0] });
         }
 	}
-	*/
 }
 
 //This function contains our logic during resupply runs
-function resupply_potions()
+function resupplyHealthPotions()
+{
+	var potion_merchant = get_npc("fancypots");
+	
+	var distance_to_merchant = null;
+	
+	if(potion_merchant != null) 
+	{
+		distance_to_merchant = distance_to_point(potion_merchant.position[0], potion_merchant.position[1]);
+	}
+	
+	if (!smart.moving 
+		&& (distance_to_merchant == null || distance_to_merchant > 250)) {
+            smart_move({ to:"potions"});
+    }
+	
+	if(distance_to_merchant != null 
+	   && distance_to_merchant < 250)
+	{
+		buy_potions();
+	}
+}
+
+function resupplyManaPotions()
 {
 	var potion_merchant = get_npc("fancypots");
 	
