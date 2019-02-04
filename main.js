@@ -66,6 +66,35 @@ function state_controller()
 //This function contains our logic for when we're farming mobs
 function farm()
 {
+	var target=get_targeted_monster();
+	if(!target)
+	{
+		target=get_nearest_monster({min_xp:100,max_att:120});
+		if(target) change_target(target);
+		else
+		{
+			set_message("No Monsters");
+			return;
+		}
+	}
+	
+	if(!in_attack_range(target))
+	{
+		move(
+			character.x+(target.x-character.x)/2,
+			character.y+(target.y-character.y)/2
+			);
+		// Walk half the distance
+	}
+	else if(can_attack(target))
+	{
+		set_message("Attacking");
+		attack(target);
+	}
+
+
+
+	/*
 	var target = find_viable_targets()[0];
 	//Attack or move to target
     if (target != null) {
@@ -85,6 +114,7 @@ function farm()
             smart_move({ to: monster_targets[0] });
         }
 	}
+	*/
 }
 
 //This function contains our logic during resupply runs
