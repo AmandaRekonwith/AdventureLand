@@ -173,19 +173,20 @@ function resupplyManaPotions()
 //Buys potions until the amount of each potion_type we defined in the start of the script is above the min_potions value.
 function buy_potions()
 {
-	var potion_types = ["hpot0", "mpot0"];
+	var potionTypes = ["hpot0", "mpot0"];
+	var purchaseAmount = 5;
 
 	if(empty_slots() > 0)
 	{
-		for(type_id in potion_types)
+		for(typeID in potionTypes)
 		{
-			var type = potion_types[type_id];
+			var type = potionTypes[typeID];
 			
 			var item_def = parent.G.items[type];
 			
 			if(item_def != null)
 			{
-				var cost = item_def.g * 4;
+				var cost = item_def.g * purchaseAmount;
 
 				if(character.gold >= cost)
 				{
@@ -193,7 +194,7 @@ function buy_potions()
 
 					if(num_potions < min_potions)
 					{
-						buy(type, 4);
+						buy(type, purchaseAmount);
 					}
 				}
 				else
