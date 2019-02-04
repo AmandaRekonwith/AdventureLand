@@ -95,6 +95,7 @@ function killMonsters()
 
     if (get_target()) 
     {
+    	currentTarget = get_target();
         if (distance_to_point(currentTarget.real_x, currentTarget.real_y) < character.range) {
             if (can_attack(currentTarget)) 
             {
