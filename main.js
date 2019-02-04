@@ -173,6 +173,8 @@ function resupplyManaPotions()
 //Buys potions until the amount of each potion_type we defined in the start of the script is above the min_potions value.
 function buy_potions()
 {
+	var potion_types = ["hpot0", "mpot0"];
+	
 	if(empty_slots() > 0)
 	{
 		for(type_id in potion_types)
