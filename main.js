@@ -1,7 +1,7 @@
 game_log("---Script Start---");
 //Put monsters you want to kill in here
 //If your character has no target, it will travel to a spawn of the first monster in the list below.
-var monster_targets = ["Goo"];
+var monster_targets = ["goo"];
 
 var state = "farm";
 
