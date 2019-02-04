@@ -193,7 +193,7 @@ function buy_potions()
 
 					if(num_potions < min_potions)
 					{
-						buy(type, purchase_amount);
+						buy(type, 5);
 					}
 				}
 				else
