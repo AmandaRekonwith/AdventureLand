@@ -174,7 +174,7 @@ function resupplyManaPotions()
 function buy_potions()
 {
 	var potionTypes = ["hpot0", "mpot0"];
-	var purchaseAmount = 5;
+	var purchaseAmount = 50;
 
 	if(empty_slots() > 0)
 	{
