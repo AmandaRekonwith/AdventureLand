@@ -38,15 +38,13 @@ function determineWhatToDo()
 		return "Kill Monsters";
 	}
 
-	var healthPotionType = "hpot0";
-	var numberOfHealthPotionsCurrentlyHeld = num_items(healthPotionType);
+	var numberOfHealthPotionsCurrentlyHeld = num_items("hpot0");
 	if(numberOfHealthPotionsCurrentlyHeld < 50)
 	{
 		return "Resupply Health Potions";
 	}
 
-	var manaPotionType = "mpot0";
-	var numberOfManaPotionsCurrentlyHeld = num_items(manaPotionType);
+	var numberOfManaPotionsCurrentlyHeld = num_items("mpot0");
 	if(numberOfManaPotionsCurrentlyHeld < 50)
 	{
 		return "Resupply Mana Potions";
